@@ -1,42 +1,53 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculadora Sidsa</title>
-  <link rel="manifest" href="/manifest.json">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculadora Sidsa - Una calculadora progresiva">
+    <meta name="theme-color" content="#0a74da">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Calculadora">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" href="/icon-192.png">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    <title>Calculadora Sidsa</title>
 </head>
+
 <body>
-  <h1>Calculadora Sidsa</h1>
-  <button id="addToHomeBtn" style="display:none;">Añadir a pantalla de inicio</button>
+    <h1>Calculadora Sidsa</h1>
+    <button id="addToHomeBtn" style="display:none;">Añadir a pantalla de inicio</button>
 
-  <script>
-    let deferredPrompt;
-    const addBtn = document.getElementById('addToHomeBtn');
+    <script>
+        let deferredPrompt;
+        const addBtn = document.getElementById('addToHomeBtn');
 
-    // Captura el evento antes de que el navegador muestre el prompt automáticamente
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault(); // Previene que el prompt se muestre automáticamente
-      deferredPrompt = e; // Guardamos el evento para usarlo luego
-      addBtn.style.display = 'inline-block'; // Mostramos el botón
-    });
+        // Captura el evento antes de que el navegador muestre el prompt automáticamente
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault(); // Previene que el prompt se muestre automáticamente
+            deferredPrompt = e; // Guardamos el evento para usarlo luego
+            addBtn.style.display = 'inline-block'; // Mostramos el botón
+        });
 
-    addBtn.addEventListener('click', async () => {
-      if (!deferredPrompt) return;
-      deferredPrompt.prompt(); // Mostramos el prompt al usuario
-      const { outcome } = await deferredPrompt.userChoice;
-      console.log('Elección del usuario:', outcome);
-      deferredPrompt = null;
-      addBtn.style.display = 'none'; // Ocultamos el botón después de usarlo
-    });
-  </script>
+        addBtn.addEventListener('click', async () => {
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt(); // Mostramos el prompt al usuario
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log('Elección del usuario:', outcome);
+            deferredPrompt = null;
+            addBtn.style.display = 'none'; // Ocultamos el botón después de usarlo
+        });
+    </script>
 
-  <script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js')
-    .then(() => console.log('Service Worker registrado'))
-    .catch(err => console.error('Error registrando SW:', err));
-}
-</script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(() => console.log('Service Worker registrado'))
+                .catch(err => console.error('Error registrando SW:', err));
+        }
+    </script>
 </body>
+
 </html>
