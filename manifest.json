@@ -10,18 +10,6 @@
   "background_color": "#ffffff",
   "categories": ["utilities", "productivity"],
   "prefer_related_applications": false,
-  "screenshots": [
-    {
-      "src": "/screenshot-192x256.png",
-      "sizes": "192x256",
-      "type": "image/png"
-    },
-    {
-      "src": "/screenshot-512x682.png",
-      "sizes": "512x682",
-      "type": "image/png"
-    }
-  ],
   "icons": [
     {
       "src": "/android-chrome-36x36.png",

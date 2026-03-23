@@ -84,3 +84,28 @@ code {
 code.image {
 	background-color: lightyellow;
 }
+
+/* Estilos para el botón de instalación PWA */
+.btn-install {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #0a74da;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: background-color 0.3s, transform 0.2s;
+    margin: 20px 0;
+}
+
+.btn-install:hover {
+    background-color: #085da3;
+    transform: translateY(-2px);
+}
+
+.btn-install:active {
+    transform: translateY(0);
+}

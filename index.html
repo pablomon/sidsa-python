@@ -4,13 +4,15 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Simple PWA 3</title>
+    <title>Calculadora Sidsa PWA</title>
     <link rel="canonical" href="https://simplepwa.com" />
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, viewport-fit=cover">
-    <meta name="theme-color" content="#000000">
+    <meta name="theme-color" content="#0a74da">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
 
     <!-- Styles -->
@@ -20,7 +22,7 @@
     <script>
         if ("serviceWorker" in navigator) {
             window.addEventListener("load", () => {
-                navigator.serviceWorker && navigator.serviceWorker.register("./sw.js");
+                navigator.serviceWorker.register("./sw.js").catch(err => console.log("SW registration failed", err));
             });
         }
     </script>
@@ -34,48 +36,61 @@
             <a href="./" class="logo" aria-label="Logo">
                 <img src="logo.png" alt="Logo">
             </a>
-            <h1>Simple Progressive Web App (PWA) template</h1>
+            <h1>Calculadora Sidsa PWA</h1>
         </div>
     </header>
     <section>
-        <button id="install-btn" style="display:none;">Instalar Calculadora</button>
+        <div class="container">
+            <button id="install-btn" class="btn-install" style="display:none;">📲 Instalar Aplicación</button>
+        </div>
     </section>
 
 
     <script>
-        // Espera a que todo el DOM esté cargado
-        document.addEventListener('DOMContentLoaded', () => {
-            let deferredPrompt;
-            
-            // Captura el evento que dispara Chrome antes de mostrar su banner
-            window.addEventListener('beforeinstallprompt', (e) => {
-                e.preventDefault(); // bloquea el banner automático
-                deferredPrompt = e; // guardamos el evento para usarlo más tarde
-                
-                // Mostramos el botón en la web
-                const installBtn = document.getElementById('install-btn');
-                installBtn.style.display = 'block';
-            });
-            
-            const installBtn = document.getElementById('install-btn');
-            installBtn.addEventListener('click', async () => {
-                if (!deferredPrompt) return;
-                
-                // Muestra el diálogo de instalación
-                deferredPrompt.prompt();
-                const choice = await deferredPrompt.userChoice;
-                
-                if (choice.outcome === 'accepted') {
-                    console.log('Usuario instaló la PWA');
-                } else {
-                    console.log('Usuario canceló la instalación');
-                }
-                
-                deferredPrompt = null; // Ya no se puede usar el evento
-                installBtn.style.display = 'none'; // Ocultamos el botón
-            });
+        // Lógica de Instalación PWA
+        let deferredPrompt;
+        const installBtn = document.getElementById('install-btn');
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Evita que el navegador muestre automáticamente su banner
+            e.preventDefault();
+            // Guarda el evento para dispararlo más tarde
+            deferredPrompt = e;
+            // Muestra nuestro botón personalizado
+            installBtn.style.display = 'block';
+            console.log('Evento beforeinstallprompt capturado');
         });
-        log('Script cargado');
+        
+        installBtn.addEventListener('click', async () => {
+            if (!deferredPrompt) return;
+            
+            // Muestra el prompt de instalación
+            deferredPrompt.prompt();
+            
+            // Espera a que el usuario responda
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`Respuesta del usuario: ${outcome}`);
+            
+            if (outcome === 'accepted') {
+                console.log('App instalada con éxito');
+                installBtn.style.display = 'none';
+            }
+            
+            // Limpiamos el prompt ya que no se puede volver a usar
+            deferredPrompt = null;
+        });
+
+        // Ocultar botón si ya está instalada
+        window.addEventListener('appinstalled', (evt) => {
+            console.log('La PWA ha sido instalada');
+            installBtn.style.display = 'none';
+        });
+
+        // Verificar si ya estamos en modo standalone (instalada)
+        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+            console.log('Estamos en modo standalone (ya instalada)');
+            installBtn.style.display = 'none';
+        }
     </script>
 
 </body>
