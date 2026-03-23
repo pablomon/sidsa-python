@@ -43,39 +43,39 @@
 
 
     <script>
-        log('Script cargado');
         // Espera a que todo el DOM esté cargado
         document.addEventListener('DOMContentLoaded', () => {
             let deferredPrompt;
-
+            
             // Captura el evento que dispara Chrome antes de mostrar su banner
             window.addEventListener('beforeinstallprompt', (e) => {
                 e.preventDefault(); // bloquea el banner automático
                 deferredPrompt = e; // guardamos el evento para usarlo más tarde
-
+                
                 // Mostramos el botón en la web
                 const installBtn = document.getElementById('install-btn');
                 installBtn.style.display = 'block';
             });
-
+            
             const installBtn = document.getElementById('install-btn');
             installBtn.addEventListener('click', async () => {
                 if (!deferredPrompt) return;
-
+                
                 // Muestra el diálogo de instalación
                 deferredPrompt.prompt();
                 const choice = await deferredPrompt.userChoice;
-
+                
                 if (choice.outcome === 'accepted') {
                     console.log('Usuario instaló la PWA');
                 } else {
                     console.log('Usuario canceló la instalación');
                 }
-
+                
                 deferredPrompt = null; // Ya no se puede usar el evento
                 installBtn.style.display = 'none'; // Ocultamos el botón
             });
         });
+        log('Script cargado');
     </script>
 
 </body>
