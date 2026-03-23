@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora Sidsa</title>
+  <link rel="manifest" href="/manifest.json">
+</head>
+<body>
+  <h1>Calculadora Sidsa</h1>
+  <button id="addToHomeBtn" style="display:none;">Añadir a pantalla de inicio</button>
+
+  <script>
+    let deferredPrompt;
+    const addBtn = document.getElementById('addToHomeBtn');
+
+    // Captura el evento antes de que el navegador muestre el prompt automáticamente
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault(); // Previene que el prompt se muestre automáticamente
+      deferredPrompt = e; // Guardamos el evento para usarlo luego
+      addBtn.style.display = 'inline-block'; // Mostramos el botón
+    });
+
+    addBtn.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt(); // Mostramos el prompt al usuario
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log('Elección del usuario:', outcome);
+      deferredPrompt = null;
+      addBtn.style.display = 'none'; // Ocultamos el botón después de usarlo
+    });
+  </script>
+</body>
+</html>
