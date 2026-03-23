@@ -17,7 +17,6 @@
     <link rel="stylesheet" href="style.css">
 
     <!-- Javscript -->
-    <script defer src="install.js"></script>
     <script>
         if ("serviceWorker" in navigator) {
             window.addEventListener("load", () => {
@@ -44,6 +43,7 @@
 
 
     <script>
+        log('Script cargado');
         // Espera a que todo el DOM esté cargado
         document.addEventListener('DOMContentLoaded', () => {
             let deferredPrompt;
